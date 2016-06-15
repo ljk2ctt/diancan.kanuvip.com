@@ -1,0 +1,99 @@
+<!doctype html>
+
+<html lang="en">
+
+    <head>
+
+        <meta charset="UTF-8">
+
+        <meta name="Generator" content="EditPlus®">
+
+        <meta name="Author" content="">
+
+        <meta name="Keywords" content="">
+
+        <meta name="Description" content="">
+
+        <title>登录</title>
+
+    <css href="/Public/Admin/images/new_login/style.css" />   
+
+</head>
+
+<body>
+
+
+
+    <div class="maxlogin">
+
+        <div class="login-title">卡奴奴后台管理系统</div>
+
+        <form method="post" action="" class="signupform">
+
+
+
+            <ul class="" style="width:266px; float: left">
+
+                <li class="form-item">
+
+                    <span>账&#12288;号</span><input class="x-input" type="text" name="username" placeholder="请输入用户名">
+
+
+
+                </li>
+
+                <li class="form-item">
+
+                    <span>密&#12288;码</span><input class="x-input" type="password" name="pwd" placeholder="请输入密码">
+
+
+
+                </li>
+
+                <li class="form-item yanzheng clearfix">
+
+                    <span>验证码</span><input class="x-input" type="text" name="verify" placeholder="验证码">
+
+                    <div class="yz-img"><img src="{:U('verify')}" id="yzmimg" height="20"/></div>
+
+                </li>
+
+                <li class="form-item tijiao">
+
+                    <input name="input" class="butto" value="提交" type="submit">
+
+                    <!--<a href="#" title="忘记密码">忘记密码？</a>-->
+
+
+
+                </li>
+
+
+
+            </ul>
+
+
+
+        </form>
+
+
+
+    </div>
+
+
+
+</body>
+
+</html>
+
+<js href='/Public/js/jquery-1.3.2.min.js'/>
+
+<script>
+
+    $('#yzmimg').click(function () {
+
+        $(this).attr('src', "{:U('verify')}?" + Math.random());
+
+    });
+
+</script>

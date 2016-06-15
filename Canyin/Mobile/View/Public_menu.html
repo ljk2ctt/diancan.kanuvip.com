@@ -1,0 +1,29 @@
+<style>
+    #countword{position:absolute;top:4px;left:52%;background-color:#FF0000;border-radius:50%;width: 2rem;height: 2rem;color: #FFFFFF;line-height: 2rem;font-size: 1.5rem;display: none}
+</style>
+<div class="wx_nav" id="wx_nav">
+    <a href="{:U('Menu/index',array('table_id'=>$_GET['table_id']))}" class="nav_index" >首页</a>
+    <a href="{:U('Car/index',array('table_id'=>$_GET['table_id']))}" class="nav_me" >购物车<div id='countword'></div></a>
+    <a href="{:U('Order/index',array('table_id'=>$_GET['table_id']))}" class="nav_shopcart" >订单</a>
+</div>
+<script>
+    function countcar()
+    {
+        $.post("{:U('Car/getcarcount')}",{table_id:{$_GET['table_id']}},function(data){
+//            alert(data);
+            if(data.info)
+            {
+                $("#countword").html(data.info);
+                $("#countword").show();
+            }
+            else
+            {
+                $("#countword").hide();
+            }
+        });
+    }
+     
+    $(document).ready(function () {
+        countcar();
+    });   
+</script>

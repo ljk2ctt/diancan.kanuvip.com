@@ -1,0 +1,67 @@
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline
+}
+select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input{display: block;padding: 4px 6px;font-size: 14px;color: #555555;-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;vertical-align: middle;}
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section {
+	display: block
+}
+a{color:#333;text-decoration:none;}
+body {}
+ol,ul {
+	list-style: none
+}
+blockquote,q {
+	quotes: none
+}
+blockquote: before,blockquote: after,q: before,q: after {
+	content: '';
+	content: none
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0
+}
+
+body {
+	font-family: 'microsoft yahei','\534E\6587\7EC6\9ED1',Verdana,Arial,Helvetica,sans-serif;
+	background-color: #f8f8f8
+;
+	font-size: 12px;
+}
+.clearfix:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+/*==========================================*/
+body{background: url(body.jpg) no-repeat right -171px #0d63d4;}
+.login-title{position:absolute;top: -78px;color: #fff;font-size: 38px;left: 0px;}
+.maxlogin{width: 433px; height: 345px;padding: 46px 0 0 72px;float: right;margin-top: 242px;position: relative;}
+.maxlogin .login-top{width:549px; height: 86px;background:url(login-t.png) no-repeat 0px 0px;margin: 0 auto;padding-top: 54px;display: none;}
+.maxlogin .maxlogo img{display:block;width: 67px;}
+.maxlogin .maxlogo{position:absolute;left:0px;top: 7px;}
+.maxlogin .maxtop{position:relative;width: 524px;margin: 0px auto 0 auto;font-size: 23px;color: #fff;}
+.maxlogin .maxtop span{font-size:12px;}
+.maxlogin .maxtop h3{padding-left: 68px;}
+.maxlogin .x-input{height: 28px;line-height: 28px;padding:0;padding-left:10px;font-size: 12px;border-radius:0;width: 189px;border: 1px solid #93928e;margin-left: 54px;}
+.maxlogin ul{position: relative;left: -54px;}
+.maxlogin ul span{color: #fff;display: block;float: left;font-size: 15px;}
+.maxlogin ul li{padding-bottom: 14px;float: left;clear: both;position: relative;line-height: 28px;width: 266px;}
+.maxlogin ul li.yanzheng{width:163px}
+.maxlogin ul .yz-img{border: 1px solid #7491b5;overflow: hidden;position: absolute;right: -91px;top: 0;cursor: pointer;}
+.maxlogin ul .yz-img img{display:block}
+.maxlogin ul .yanzheng input{width: 97px;height: 22px;line-height: 22px;}
+.maxlogin .tijiao{float:left;padding-left:54px;padding-top: 18px;}
+.maxlogin .tijiao a{color:#fff}
+.maxlogin .tijiao input{width: 119px;height: 31px;line-height: 31px;color:#0b4caa;text-align:center;padding:0;border: 0;background: url(btn.gif) 0 0;display: block;float: left;margin-right: 24px;cursor:pointer;color: #fff;font-family: microsoft yahei;}
+.maxlogin .tijiao a:hover,.maxlogin .tijiao input:hover{text-decoration:underline;}
+.maxlogin .zcbox a{color:#0432ff;padding-right: 10px;}
+.maxlogin .zcbox {padding-left:10px;}
+.maxlogin .zcbox a:hover{text-decoration:underline;;}

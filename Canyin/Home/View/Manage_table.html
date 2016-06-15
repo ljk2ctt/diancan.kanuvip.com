@@ -1,0 +1,90 @@
+<if condition="!isset($_GET['tablecontent'])">
+<include file="Public:nav" />
+<div class="container clearfix m0p0w100">
+    <include file="Public:left" />    
+    <div class='main-wrap' id='tablecontent'>
+    </if>
+    <if condition="isset($_GET['tablecontent'])">
+        <div class="crumb-wrap">
+            <div class="crumb-list">桌台管理</div>
+        </div>
+        <css href='/Public/Home/css/main.css'/>
+        <div class="form-group">            
+            <a class="btn btn-primary btn-sm" href="javascript:;" onclick='shqr()' id="getqr">二维码</a>
+            <div class="form-group inline-form" style="display: inline-block;">
+                <form action="{:U('')}" class="form-inline" method="get" >
+                    <div class="form-group">
+                        <input class="form-control" id="name" name="name" placeholder="名字(桌台号)" type="search">
+                    </div>
+                    <div class="form-group">
+                        <select id="cid" name="cid" class="form-control-excel">
+                            <option value="">桌台类型</option>
+                            <foreach name="cate" item="d">
+                            <option value="{$d.id}">{$d.name}</option>
+                            </foreach>
+                        </select>
+                    </div>
+                    <input class="btn btn-sm btn-success" name="commit" type="submit" value="搜索">
+                </form>
+            </div>
+        </div>
+        <div id="queue-setting-index-body">
+            <div class="table-state-tables">
+                <div class="col-xs-12">
+                    <?php
+                    $css_arr    =   array(0=>'idle', 1=>'opened', 2=>'ordered', 3=>'paid');
+                    $text_arr   =   array(0=>'空闲',1=>'已开台',2=>'已下单',3=>'已支付');
+                    ?>
+                    <foreach name="tables" item="table">                    
+                    <div class="state-table" data-id="{$table.id}">
+                        <a class="{$css_arr[$table['status']]} round" href="{:U('order',array('table_id'=>$table['id']))}" data-remote="" title="点击查看餐桌订单">
+                            <div class="state">{$text_arr[$table['status']]}</div>
+                        </a>
+                        <img class="tableqr" style="display: none" src="{$table.qrimgurl}" width="140"/>
+                        <div class="name overflow-ellipsis">
+                            <span><a href="{:U('order',array('table_id'=>$table['id']))}">{$table.name}</a></span>                            
+                        </div>
+                    </div>
+                    </foreach>
+                </div>
+                <div class="col-xs-4">
+                    <div class="table-order"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    
+<else />
+    </div>
+    
+<js href='/Public/js/jquery-1.3.2.min.js'/>
+<script>
+    var show_qr=0;
+    function shqr(){
+        if(show_qr===0)
+        {
+            $(".tableqr").show();
+            show_qr=1;
+        }
+        else
+        {            
+            $(".tableqr").hide();
+            show_qr=0;
+        }
+    }
+    var timer=null;
+    function f5(){
+        $.get("{:U('')}",{tablecontent:1},function(data)
+        {
+            $("#tablecontent").html(data);
+        });
+        if(timer==null)
+        {
+            timer=setInterval("f5()",10000);
+        }
+    }
+    f5();
+    
+</script>
+    </if>

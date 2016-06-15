@@ -1,0 +1,1 @@
+<?phpnamespace Home\Model;use Think\Model;class TableCateModel extends Model{    protected  $_validate=array(        array('name','require','名称必须！'),         array('sid','require','请选择门店！'),     );   }

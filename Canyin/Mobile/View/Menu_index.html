@@ -1,0 +1,222 @@
+<include file="Public:header" />
+<css href="/Public/Mobile/style/style.css"/>
+<css href="/Public/Mobile/style/allGoods.css"/>
+<body>
+    <div class="body">
+        <div class="container">
+            <div class="allLogo">
+                <div class="logo"><img src="{:C('KANU_IMG')}{$storeinfo.logo}" alt="logo" /></div>
+                <div class="head"><a href="javascript:;"><img src="{:C('KANU_IMG')}{$shopinfo.logo}" alt="logo"/></a></div>
+                <div class="headInfo"><a href="javascript:;">欢迎您:{$wminfo.nickname}!</a></div>
+                <div class="headInfo" style='left:70%'><a href="javascript:;">桌号:{$tinfo.cname}{$tinfo.name}</a></div>
+            </div>            
+<if condition="!empty($choose_type)">    
+    <!--选择开台还是换桌-->
+    <div class="SeckillOne">
+        <div>
+            <a href="{:U('?choose_type=2',array('table_id'=>$table_id))}"><img  src="/Public/Mobile/img/zkyz.jpg" alt="新开台"></a>
+        </div>
+    </div>
+    <div class="SeckillTwo">
+        <div>
+           <a href="{:U('?choose_type=1',array('table_id'=>$table_id))}"><img  src="/Public/Mobile/img/hz.jpg" alt="换桌"></a>
+        </div>
+    </div>
+<!--    <div class="SeckillTwo">
+        <div>
+           <a href="javascript:;"><span style='line-height:150px;display:block'>大厅A1</span></a>
+        </div>
+    </div>-->
+<elseif condition='!empty($havingtables)' />
+    <div class="SeckillOne">
+        <div>
+            <a href="{:U('?choose_type=2',array('table_id'=>$table_id))}"><img  src="/Public/Mobile/img/zkyz.jpg" alt="新开台"></a>
+        </div>
+    </div>
+    <foreach name="havingtables" item="having_table_id">
+    <div class="SeckillTwo">
+        <div>
+            <a href="{:U('?choose_type=1',array('table_id'=>$table_id,'choose_which'=>$having_table_id))}"><span></span>{$tlist[$having_table_id]['cname']}{$tlist[$having_table_id]['name']}</a>
+        </div>
+    </div>
+    </foreach>
+<else />
+
+<css href="/Public/Mobile/style/Up.css"/>
+<js href="/Public/Mobile/js/xlmenu.js"/>
+<js href="/Public/Mobile/js/touch.js"/>
+<js href="/Public/Mobile/js/srcolltop.js"/>
+<js href="/Public/js/jquery.lazyload.js"/>
+<!-- 隐藏菜单 -->
+<script>
+
+    $(function () {
+        var titleName = $(".ycmenu a");
+        for (var i = 0; i < titleName.length; i++) {
+            titleName[i].id = i;
+            titleName[i].onmouseover = function () {
+                for (var j = 0; j < titleName.length; j++) {
+                    titleName[j].className = "";
+                }
+                this.className = "a";
+            }
+        }
+
+    });
+</script>
+    
+            <?php
+            $foreach=0;
+            ?>
+            <foreach name='tscs' item='data'>
+                <div class="SeckillTwo" <if condition='!$foreach'>style=" margin-top: 5rem;"</if>><?php ++$foreach;?>
+                    <div>
+                        <img data-original="{:C('KANU_IMG')}{$data.pic}"  src="/Public/Mobile/img/loading_comment.gif" class="lazy">
+                    </div>
+                    <div  class="HotDate">
+                        <br><a>特色菜</a><br>
+                        <span class="t_d">{$data.gname}</span><br>
+                        <!--            <span class="t_h">00:</span>
+                                    <span class="t_m">00:</span>
+                                    <span class="t_s">00</span>-->
+                    </div>
+                    <div class="hurry" style="right: 0">
+                        <a href="javascript:;" addcar='{$data.goods_id}'><button>来一份 <img src="/Public/Mobile/img/jian.png"></button></a>
+                    </div>
+                    <div class="number">
+                        <!--<p>已抢 25 份 剩余 25 份</p>-->
+                    </div>
+                </div>
+            </foreach>
+            <div class="sidebar-nav" style="height: <?php echo count($goods)*17;?>em">
+                <ul class="sidebar-trans">
+                    <li class="nav-item">
+                        <a href="{:U('',array('table_id'=>$table_id))}" <if condition="empty($cid)"> class="categoryActive"</if> >
+                            <span class="nav-title">全部菜品</span></a>
+                    </li>
+                    <foreach name="goodscates" item="goodscate">
+                        <li class="nav-item">
+                        <a href="{:U('',array('table_id'=>$table_id,'cid'=>$goodscate['id']))}" <eq name='cid' value="$goodscate['id']"> class="categoryActive"</eq>>
+                            <span class="nav-title">{$goodscate.name}</span></a>
+                    </li>
+                    </foreach>
+                </ul>
+            </div>
+            <foreach name='goods' item='good'>
+            <div class="menu-list" style=" padding-top: 1em;border-bottom: 0">
+                <figure class="menu-figu">
+                    <a href="">
+                        <img data-original="{:C('KANU_DOMAIN')}{:substr($good['pic'],1)}" alt="商品"
+                             src="/Public/Mobile/img/loading_comment.gif" class="xqtp lazy"/></a>
+
+                    <p class="menu-title">{$good.name}</p>
+
+                    <p class="menu-show">人气:{$good.sellnums}</p>
+                    <div class="info clear">
+                        <em class="menu-sat">￥{$good.price}</em>
+                        <span class="sidebar-up" addcar='{$good.id}'><img src="/Public/Mobile/img/up.svg"  alt=""/></span>
+                        <span class="sidebar-num" <if condition="$now_cars[$good['id']] gt 0"> style="display:block"</if>>{$now_cars[$good['id']]|default=0}</span>
+                        <span class="sidebar-down" delcar='{$good.id}' <if condition="$now_cars[$good['id']] gt 0"> style="display:block"</if>><img src="/Public/Mobile/img/down.svg"  alt=""/></span>
+                    </div>
+                </figure>
+            </div>
+            </foreach>
+            <div class="clear"></div>    
+        </div>
+        <include file="Public/menu"/>
+        <!--<div class="actGotop"><a href="javascript:;" title="返回顶部"></a> <img src="/Public/Mobile/img/fanhui.png" alt=""></div>-->
+        <div class="theme-popover-mask"></div>
+    </div>
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+        $(".lazy").lazyload();
+//        alert('1');
+    });
+    
+    $(function () {
+        var titleName = $(".sidebar-nav a");
+        var up = $("span.sidebar-up");
+        var down = $("span.sidebar-down");
+        var num = $(".sidebar-num");
+        //点击加数量 添加到购物车
+        up.click(function (e) {
+            var end = $('.wx_nav');
+            var upWidth = up.width() + 'px';
+            var upHeight = up.height() + 'px';
+            var upY = e.originalEvent.y || e.originalEvent.layerY || 0;
+            var upX = e.originalEvent.x || e.originalEvent.layerX || 0;
+            var flyElm = $(this).clone();
+            var endHeight = end.height() / 2.5;
+            var upIndex = up.index(this);
+            var oldValue = parseInt(num[upIndex].innerHTML);
+            down[upIndex].style.display = 'block';
+            num[upIndex].style.display = 'block';
+            oldValue++;
+            num[upIndex].innerHTML = oldValue;
+            flyElm.css({
+                'z-index': 9000,
+                'display': 'block',
+                'position': 'fixed',
+                'top': upY - parseInt(upHeight),
+                'left': upX - parseInt(upWidth),
+                'width': upWidth,
+                'height': upHeight
+            });
+            $('body').append(flyElm);
+            flyElm.animate({
+                top: end.position().top - parseInt(endHeight) + 'px',
+                left: '47%',
+                width: upWidth,
+                height: upHeight,
+                'opacity': '0'
+            }, 500);
+            var id = $(this).attr('addcar');
+            $.post("{:U('')}", {table_id: {$table_id}, id: id,act:'add'}, function (data) {
+                if (data.status == 0)
+                {
+                    myalert(data.info);
+
+                    return false;
+                }
+                countcar();
+            }, 'json');
+        });
+        //点击减数量
+        down.click(function () {
+            var dnIndex = down.index(this);
+            var oldValue = parseInt(num[dnIndex].innerHTML);
+            if (oldValue == 1) {
+                oldValue = 0;
+                down[dnIndex].style.display = 'none';
+                num[dnIndex].style.display = 'none';
+                num[dnIndex].innerHTML = oldValue
+            } else {
+                oldValue--;
+                num[dnIndex].innerHTML = oldValue
+            }
+            var id = $(this).attr('delcar');
+            $.post("{:U('')}", {table_id: {$table_id}, id: id,act:'reduce'}, function (data) {
+                if (data.status == 0)
+                {
+                    myalert(data.info);
+                    return false;
+                }
+                countcar();
+            }, 'json');
+        });
+        //标签切换
+        for (var i = 0; i < titleName.length; i++) {
+            titleName[i].id = i;
+            titleName[i].onmouseover = function () {
+                for (var j = 0; j < titleName.length; j++) {
+                    titleName[j].className = "";
+                }
+                this.className = "categoryActive";
+            }
+        }
+    });
+
+</script>
+</if>

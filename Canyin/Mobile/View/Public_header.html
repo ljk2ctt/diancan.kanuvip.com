@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height, user-scalable=no,initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <title>{$web_title|default='点餐'}</title>
+    <js href="/Public/Mobile/js/jquery-1.12.1.min.js"/>
+    <script>
+        //自定义弹出框
+        var timer=null;
+        function myalert(str)
+        {
+            $("#alertdivmsg").html(str);
+            $("#alertdiv").show();
+            timer=setInterval('hidemyalert()',1000);
+        }
+        function hidemyalert()
+        {
+            $("#alertdiv").fadeOut(500);
+            clearInterval(timer);
+        }
+        
+    </script>
+    <div id="alertdiv" style="z-index: 11000; width: 100%; position: fixed; top: 200px;display:none"><div id='alertdivmsg' style="width:16em; text-align:center; border-radius:5px; -moz-border-radius:5px; background-color:black; color:white; padding:1em 2em; margin:0px auto;font-size:1.8rem">
+        </div></div>
+</head>

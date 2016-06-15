@@ -1,0 +1,211 @@
+<include file="Public:header" />
+<if condition="!empty($tables)">
+<css href='/Public/Mobile/style/zhuce.css'/>
+<body>
+<div class="body">
+    <div class="dlbg">
+        <div class="dl">
+            <p>请选择桌台</p>
+            <div class="srk">
+                <foreach name='tables' key='table_id' item='name'>
+                <a href="{:U('?table_id='.$table_id)}"><button type="button" id="btn">{$name}</button></a><br/>
+                </foreach>
+            </div>           
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<else />
+<css href='/Public/Mobile/style/shopping.css'/>
+<!-- 复选框 -->
+<script type="text/javascript">
+    function check() {
+    var checkbox = document.getElementById('checkbox');
+            checkbox.value == 1 ? checkbox.value = 2 : checkbox.value = 1;
+            var checkboxs = document.getElementsByName('box');
+            for (var i = 0; i < checkboxs.length; i++) {
+
+    if (checkbox.value == 1) {
+    checkboxs[i].checked = false;
+    } else {
+    checkboxs[i].checked = true;
+    }
+    }
+    }
+    ;
+            $(function () {
+            //数量增加操作
+            $(".plus").click(function () {
+            var gid = $(this).attr('gid');
+                    var thisnum = $('#ul' + gid + ' .num');
+                    thisnum.val(parseInt(thisnum.val()) + 1);
+                    $.post("{:U('Menu/index')}", {id:gid, table_id:{$table_id}});
+                    setTotal();
+            });
+                    //数量减少操作            
+                    $(".reduce").click(function () {
+            var gid = $(this).attr('gid');
+                    var thisnum = $('#ul' + gid + ' .num');
+                    if (parseInt(thisnum.val()) < 1)
+            {
+            myalert('不能小于0');
+                    return false;
+            }
+            thisnum.val(parseInt(thisnum.val()) - 1);
+                    $.post("{:U('Menu/index')}", {id:gid, table_id:{$table_id}, act:'reduce'});
+                    setTotal();
+            });
+                    function setTotal() {
+                    var total = 0;
+                            $(".spxz ul").each(function(){
+                    var gid = $(this).attr('gid');
+                            var price = $('#ul' + gid + ' .one').val();
+                            var num = $('#ul' + gid + ' .num').val();
+                            total += price * num;
+                    });
+                            $(".red").html("<a>￥</a>" + (parseInt(total).toFixed(2))); //toFixed()是保留小数点的函数
+                    }
+            setTotal();
+            });</script>
+<style>
+    .menu{    width: 100%;
+              position: fixed;
+              bottom: 0;
+              display: none;
+              background-color: #ffffff;
+              z-index: 9999;}
+    .menu ul{
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+    .menu ul li{    width: 80%;
+                    text-align: center;
+                    margin: 1rem auto;}
+    .menu ul a{
+        line-height: 3rem;
+        margin-top: 1rem;
+        display: block;
+        font-size: 1.6rem;
+        letter-spacing: 0.5rem;
+        border: 1px solid #898989;
+    }
+    .aclass{
+        color: green;
+        border: 1px solid green;
+    }
+    .theme-popover-mask{
+        z-index: 99;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        opacity: 0.4;
+        filter: alpha(opacity=40);
+        display: none;
+    }
+
+</style>
+</head>
+<body>
+    <div class="body">
+        <div class="tour">
+            <p>购物车</p>
+            <a href="javascript:;" class="tour2"><i class="btn"></i></a>
+        </div>
+        <div class="spxz">
+            <div id='emptycar'  style="<if condition="!empty($list)"> display:none; </if>position:absolute;top:50%;left:50%;margin-left:-125px;margin-top:-125px;width:250px;height:250px;margin-top: 40px;">
+                    <center style="width:120px;margin:0 auto;"><img style="width:100%;padding-bottom:20px;" src="/Public/Mobile/img/cartIcon.png"></center>
+                    <center style="padding-top:10px;"><span style="line-height:250px">您的购物车还是空的，赶紧行动吧！</span></center>
+                    <center style="width:100px;height:35px;margin: 60px auto 0;"><a href="{:U('Menu/index',array('table_id'=>$table_id))}"><div style="width:100px;height:35px;background:#6a94e7;text-align:center;line-height:35px;border-radius: 3px;color:#fff;float:left;">返回点餐</div></a></center>
+            </div>
+            <foreach name='list' item='data'>
+                <ul id='ul{$data.goods_id}' gid='{$data.goods_id}'>
+                    <li class="li1"><input type="checkbox" value="{$data.goods_id}" name="box"/></li>
+                    <li class="li2"><a href="javascript:;"><img src="{:C('KANU_DOMAIN')}{:substr($data['ginfo']['pic'],1)}" alt="" style="width: 60px;height: 60px"/></a></li>
+                    <li class="li3"><span>{$data.ginfo.name}</span><br><span style="color: red" >￥</span><input type="text" value="{$data.ginfo.price}" class="one" disabled="disabled"></li>
+                    <li class="li4"><div><a class="reduce" gid='{$data.goods_id}' >-</a><input type="text" value="{$data.num}" class="num" /><a class="plus" gid='{$data.goods_id}'>+</a></div></li>
+                </ul>
+            </foreach>
+        </div>
+    </div>
+    <div style="clear: both"></div>
+    <div class="footing">
+        <ul>
+            <li class="li5"><input type="checkbox" id="checkbox" value="1" onclick="check()" />全选</li>
+            <li class="li6">合计：<span class="red"></span></li>
+            <li class="li7"><a href="javascript:;" id="jiesuanbotton" a="{:U('jiesuan',array('table_id'=>$table_id))}"><button type="button">结算</button></a></li>
+        </ul>
+    </div>
+    <div class="theme-popover-mask"></div>
+    <div class="menu" id="zfym">
+        <ul>
+            <foreach name="pay_mode" item='mode' key='k'>
+                <li><a href="javascript:;" class="" payid="{$k}">{$mode}</a></li>
+            </foreach>
+        </ul>
+    </div>
+    <div class="theme-popover-mask"></div>
+</body>
+</html>
+<script>
+    
+    $(".tour2").click(function(){
+        if (confirm('确定要删除选中菜品?'))
+        {
+            var times=$('[name=box]:checked').length;
+            if(times=={:count($list)})
+            {
+                $("#emptycar").show();
+            }
+            $('[name=box]:checked').each(function(){
+                var gid = $(this).val();
+                $.post("{:U('Menu/index')}", {id:gid, table_id:{$table_id}, act:'del'}, function(){
+                    $("#ul" + gid).remove();
+                }
+            );
+        });
+    }
+    return false;
+    });
+            $("#jiesuanbotton").click(function(){
+    $(".menu").slideDown(200);
+            $(".theme-popover-mask").show();
+    });
+            $(".theme-popover-mask").click(function(){
+
+    $(".menu").slideUp(200, function(){$(".theme-popover-mask").hide(); });
+    });
+            $("[payid]").click(function(){
+    var _that = $(this);
+            $(this).addClass('aclass');
+            $.post("{:U('jiesuan')}", {table_id:{$table_id}, pay_mode:$(this).attr('payid')}, function(data){
+            if (data.status == 0)
+            {
+            alert(data.info);
+//                    _that.removeClass('aclass');
+                    return false;
+            }
+            //微信支付
+            if ('2' == data.info.paymode)
+            {
+                //跳转到微信支付页面
+                location = "{:U('Wxpay/index')}?order_sn="+data.info.order_sn;
+            }
+            //现金支付
+            else if ('1' == data.info.paymode)
+            {
+                location = "{:U('Order/index')}";
+            }
+            //现金支付
+            else if ('3' == data.info.paymode)
+            {
+                //跳转到微信支付页面
+                location = "{:U('Knpay/index')}?order_sn="+data.info.order_sn;
+            }
+            }, 'json');
+    });
+</script>
+</if>

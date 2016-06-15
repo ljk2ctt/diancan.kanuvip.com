@@ -1,0 +1,66 @@
+<include file="Public:header" />
+<css href="/Public/Mobile/style/myList.css"/>
+<!-- A标签切换 -->
+<script>
+    $(function(){
+    var title=$(".qbdd a");
+    for(var i =0;i<title.length;i++){
+     title[i].id=i;
+        title[i].onmouseover=function(){
+    for(var j =0;j<title.length;j++){
+        title[j].className="";
+    }
+        this.className = "aclass";
+    }
+    }
+
+});
+</script>
+<body>
+<div class="body">
+    <div class="tour">
+        <p>我的订单</p>
+    </div>
+    <div class="qbdd">
+        <ul>
+            <li><a href="{:U('',array('table_id'=>$_GET['table_id']))}" <if condition='empty($status)'>class="aclass"</if>>全部订单</a></li>
+            <li><a href="{:U('?status=1',array('table_id'=>$_GET['table_id']))}" <if condition='!empty($status) and $status eq 1'>class="aclass"</if>>待付款</a></li>
+            <li><a href="{:U('?status=2',array('table_id'=>$_GET['table_id']))}" <if condition='!empty($status) and $status eq 2'>class="aclass"</if>>已付款</a></li>
+        </ul>
+    </div>
+    <foreach name="lists" item="list">
+    <div class="ddbh">
+        <ul>
+            <li class="li1">订单编号：{$list.order_sn}</li>
+            <li class="li2"><a href="javascript:;"><button type="button"><switch name='list.status'><case value='1'>待付款</case><case value='2'>已付款</case><case value='3'>取消</case><case value='4'>取消</case><case value='5'>已完成</case></switch></button></a></li>
+        </ul>
+        <div style="clear: both"></div>
+    </div>
+    <foreach name='list.oinfo' item='info'>
+    <div class="zfdd">
+        <ul>
+            <li class="li3"><a href="javascript:;"><img src="{:C('KANU_DOMAIN')}{:substr($info['ginfo']['pic'],1)}" alt="" style="width: 60px;height: 60px"/></a></li>
+            <li class="li4"><span>×{$info.num}</span><br/><span>{$info.ginfo.name}</span><br/><span style="color: red">￥{$info.price}</span></li>
+        </ul>
+        <div style="clear: both"></div>
+    </div>
+    </foreach>
+    <div class="ddfk">
+            <ul>
+                <li class="li5">订单付款：￥{$list.true_pay}</li>
+                <li class="li5" style='padding-left: 1rem'>付款方式：{:C('PAY_MODE.'.$list['pay_mode'])}</li>
+                <!--用户暂不能取消-->
+                <!--<li class="li6"><a href="javascript:;" id="cancel"><button type="button">取消</button></a></li>-->
+                <if condition="$list['status'] eq 1 and $list['pay_mode'] neq 1">
+                    <li class="li6"><a href="{:U('pay',array('order_sn'=>$list['order_sn']))}"><button type="button">去付款</button></a></li>
+                </if>
+            </ul>
+        <div style="clear: both"></div>
+    </div>
+    </foreach>
+    
+    <include file="Public/jishuzhichi"/>
+    <include file="Public/menu"/>
+    </div>
+</body>
+</html>

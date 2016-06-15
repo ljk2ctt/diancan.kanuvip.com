@@ -1,0 +1,98 @@
+<html><head>
+<meta charset="utf-8">
+<title>您好！欢迎订桌</title>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+<meta content="application/xhtml+xml;charset=UTF-8" http-equiv="Content-Type">
+<meta content="no-cache,must-revalidate" http-equiv="Cache-Control">
+<meta content="no-cache" http-equiv="pragma">
+<meta content="0" http-equiv="expires">
+<meta content="telephone=no, address=no" name="format-detection">
+<meta content="width=device-width, initial-scale=1.0,user-scalable=no" name="viewport">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="stylesheet" type="text/css" href="/Public/Mobile/css/reserved_style.css">
+<script type="text/javascript" src="/Public/Mobile/js/jquery-1.12.1.min.js"></script>
+</head>
+
+<body>
+<div class="body tablebg">
+  <div class="clockbody">
+    <div class="clock"> <img src="/Public/Mobile/images/clock.png" alt="钟"> </div>
+    <h3><img src="/Public/Mobile/images/ninhao.png" alt="您好！欢迎订桌"></h3>
+    <p class="tnum">现在还空闲<b>{$tables_count}</b>张桌</p>
+    <form class="orderform">
+      <p class="ydtxt clearfix"><span class="floatl">预订时间：</span>
+        <input id="reserved_time" type="datetime-local" class="floatl" value=""  style='height: inherit'>
+        <!--<i onclick="WdatePicker({el:$dp.$('reserved_time')})" class="icon-caret-down floatl"></i>--> 
+      </p>
+      <p class="ydtxt clearfix"><span class="floatl">预订人数：</span>
+        <input type="text" class="floatl" name="num" id='num' value="" style='height: inherit'>
+      </p>
+      <p class="ydtxt clearfix"><span class="floatl">手机号：</span>
+          <input type="text" class="floatl"   value="{$phone}" style='height: inherit'>
+      </p>
+<!--      <p class="ydtxt clearfix"><span class="floatl">备注：</span>
+        <textarea type="text" class="floatl" rows="4" name="remark"></textarea>
+      </p>-->
+      <p class="ydbtn"><a href="javascript:;" id='msyy' class="orange-btn">马上预订</a></p>
+      <article id="shade" class="shade" onclick="$('#shade').toggleClass('on')">
+        <ul class="yd-detail">
+          <li>预订日期：<b id='truetime'></b></li>
+          <li>预订人数：<b id='truenum'></b></li>
+        </ul>
+        <p class="detail-btn"><a class="fh">我反悔了</a>
+        <p class="detail-btn"><a class="qd orange-btn" id='btn'>我确定了</a>
+        </p>
+      </article>
+    </form>
+  </div>  
+</div>
+</body></html>
+
+<script>
+    $("#msyy").click(function(){
+        var num =   $("#num").val();
+        var reserved_time =   $("#reserved_time").val();
+        if(''===num)
+        {
+            alert('请填写预约人数');
+            return false;
+        }
+        if(''===reserved_time)
+        {
+            alert('请填写预约时间');
+            return false;
+        }
+        var date_arr=reserved_time.split('T');
+        reserved_time=date_arr[0]+'<br/>'+ date_arr[1].substring(0,5);
+        $("#truetime").html(reserved_time+'');
+        $("#truenum").html(num+'人');
+        $('#shade').toggleClass('on');
+    });
+    $("#btn").click(function(){
+        var num =   $("#num").val();
+        var reserved_time =   $("#reserved_time").val();
+        if(''===num)
+        {
+            alert('请填写预约人数');
+            return false;
+        }
+        if(''===reserved_time)
+        {
+            alert('请填写预约时间');
+            return false;
+        }
+        $.post("{:U('')}",{num:num,reserved_time:reserved_time,sid:{$sid}},function(data){
+            if(data.status==0)
+            {
+                alert(data.info);
+                return false;
+            }
+            alert('预约成功');
+            //跳转
+            
+        },'json');
+        
+    });
+</script>
