@@ -91,6 +91,7 @@ class CarController extends CommonController {
             $Car = D('Car');
             $map['wm_id'] = session('wm_id');
             $map['table_id'] = $table_id;
+            
             $lists = $Car->where($map)->select();
             if (empty($lists)) {
                 $this->error('购物车空空如也');
@@ -106,12 +107,26 @@ class CarController extends CommonController {
             }
             $nlists = array();
             $total=0;
+            $store_id   =   M('Table')->getFieldById($table_id,'sid');
+            //查询出当前门店正在促销的特色菜id数组 在时间范围内
+            $Tsc    =   M('Tsc');
+            $tmap['sid']=$store_id;
+            $tmap['promote_price']=array('gt',0);
+            $tmap['_string']="promote_time_start+promote_date_start <".NOW_TIME.' and promote_time_end+promote_date_end >'.NOW_TIME;
+            $promotes=$Tsc->where($tmap)->getField('goods_id,promote_price',true);
             foreach ($lists as $list) {
                 $list['order_sn'] = $order_sn;
                 $list['addtime'] = NOW_TIME;
-                $list['price'] = $list['ginfo']['price'];
+                if(!empty($promotes) && in_array($list['goods_id'],  array_keys($promotes)))
+                {
+                    $list['price'] = $promotes[$list['goods_id']];
+                }
+                else
+                {
+                    $list['price'] = $list['ginfo']['price'];
+                }
                 unset($list['id']);
-                $nlists[] = $list;
+                $nlists[] = $list;                
                 $total+=$list['price']*$list['num'];
             }
             unset($lists);

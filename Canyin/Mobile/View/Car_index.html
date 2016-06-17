@@ -125,7 +125,7 @@
                 <ul id='ul{$data.goods_id}' gid='{$data.goods_id}'>
                     <li class="li1"><input type="checkbox" value="{$data.goods_id}" name="box"/></li>
                     <li class="li2"><a href="javascript:;"><img src="{:C('KANU_DOMAIN')}{:substr($data['ginfo']['pic'],1)}" alt="" style="width: 60px;height: 60px"/></a></li>
-                    <li class="li3"><span>{$data.ginfo.name}</span><br><span style="color: red" >￥</span><input type="text" value="{$data.ginfo.price}" class="one" disabled="disabled"></li>
+                    <li class="li3"><span>{$data.ginfo.name}</span><br><if condition="!empty($data['ginfo']['promote_price'])">￥<span style='text-decoration:line-through;'>{$data.ginfo.price}</span><span style="color: red" >￥</span><input type="text" value="{$data.ginfo.promote_price}" class="one" disabled="disabled"><else /><span style="color: red" >￥</span><input type="text" value="{$data.ginfo.price}" class="one" disabled="disabled"></if></li>
                     <li class="li4"><div><a class="reduce" gid='{$data.goods_id}' >-</a><input type="text" value="{$data.num}" class="num" /><a class="plus" gid='{$data.goods_id}'>+</a></div></li>
                 </ul>
             </foreach>
