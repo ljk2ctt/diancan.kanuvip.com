@@ -47,23 +47,6 @@
 <js href="/Public/Mobile/js/touch.js"/>
 <js href="/Public/Mobile/js/srcolltop.js"/>
 <js href="/Public/js/jquery.lazyload.js"/>
-<!-- 隐藏菜单 -->
-<script>
-
-    $(function () {
-        var titleName = $(".ycmenu a");
-        for (var i = 0; i < titleName.length; i++) {
-            titleName[i].id = i;
-            titleName[i].onmouseover = function () {
-                for (var j = 0; j < titleName.length; j++) {
-                    titleName[j].className = "";
-                }
-                this.className = "a";
-            }
-        }
-
-    });
-</script>
     
             <?php
             $foreach=0;
@@ -296,7 +279,7 @@
                 }
             }
         });
-        $("[name=tscorder]").click(function(e){            
+        $("[name=tscorder]").click(function(e){
             var upY = e.originalEvent.y || e.originalEvent.layerY || 0;
             var upX = e.originalEvent.x || e.originalEvent.layerX || 0;
             var upWidth = $(this).width() + 'px';
@@ -321,7 +304,18 @@
                 height: upHeight,
                 'opacity': '0'
             }, 500);
+            
             var id = $(this).attr('addcar');
+            var up = $("span.sidebar-up");
+            var down = $("span.sidebar-down");
+            var num = $(".sidebar-num");
+            var upIndex = up.index($('span.sidebar-up').filter('[addcar='+id+']'));
+//            alert(upIndex);
+            var oldValue = parseInt(num[upIndex].innerHTML);
+            down[upIndex].style.display = 'block';
+            num[upIndex].style.display = 'block';
+            oldValue++;
+            num[upIndex].innerHTML = oldValue;
             $.post("{:U('')}", {table_id: {$table_id}, id: id,act:'add'}, function (data) {
                 if (data.status == 0)
                 {

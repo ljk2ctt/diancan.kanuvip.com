@@ -85,9 +85,8 @@ class MenuController extends CommonController {
             else
             {
                 if($now_car)
-                {     
-                    $adddata=$tmpdata;
-                    unset($tmpdata);
+                {
+                    $adddata=$now_car;
                     $adddata['num']++;
                     if(false===$Car->save($adddata))
                     {
