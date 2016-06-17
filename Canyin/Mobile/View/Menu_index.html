@@ -80,8 +80,8 @@
                                     <span class="t_m">00:</span>
                                     <span class="t_s">00</span>-->
                     </div>
-                    <div class="hurry" style="right: 0">
-                        <a href="javascript:;" addcar='{$data.goods_id}'><button>来一份 <img src="/Public/Mobile/img/jian.png"></button></a>
+                    <div class="hurry" style="right: 0" addcar='{$data.goods_id}' name="tscorder">
+                        <button>来一份 <img src="/Public/Mobile/img/jian.png"></button>
                     </div>
                     <div class="number">
                         <!--<p>已抢 25 份 剩余 25 份</p>-->
@@ -264,6 +264,42 @@
                     this.className = "categoryActive";
                 }
             }
+        });
+        $("[name=tscorder]").click(function(e){            
+            var upY = e.originalEvent.y || e.originalEvent.layerY || 0;
+            var upX = e.originalEvent.x || e.originalEvent.layerX || 0;
+            var upWidth = $(this).width() + 'px';
+            var upHeight =  $(this).height() + 'px';
+            var end = $('.wx_nav');
+            var flyElm = $(this).clone();
+            var endHeight = end.height() / 2.5;
+            flyElm.css({
+                'z-index': 9000,
+                'display': 'block',
+                'position': 'fixed',
+                'top': upY - parseInt(upHeight),
+                'left': upX - parseInt(upWidth),
+                'width': upWidth,
+                'height': upHeight
+            });
+            $('body').append(flyElm);
+            flyElm.animate({
+                top: end.position().top - parseInt(endHeight) + 'px',
+                left: '50%',
+                width: upWidth,
+                height: upHeight,
+                'opacity': '0'
+            }, 500);
+            var id = $(this).attr('addcar');
+            $.post("{:U('')}", {table_id: {$table_id}, id: id,act:'add'}, function (data) {
+                if (data.status == 0)
+                {
+                    myalert(data.info);
+
+                    return false;
+                }
+                countcar();
+            }, 'json');
         });
     });
     
