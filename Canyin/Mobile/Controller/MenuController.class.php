@@ -212,6 +212,13 @@ class MenuController extends CommonController {
         foreach($tscs as &$v)
         {
             $v['gname']=$Goods->getFieldById($v['goods_id'],'name');
+            $promote_price=  doubleval($v['promote_price']);
+            //is_promote true促销 false 没促销            
+            $v['is_promote']=(!empty($promote_price) && 
+                                $v['promote_time_start']<strtotime('1970-01-01'.date('H:i:s')) && 
+                                $v['promote_date_start']<=strtotime(date('Y-m-d')) && 
+                                $v['promote_time_end']>strtotime('1970-01-01'.date('H:i:s')) && 
+                                $v['promote_date_end']>=strtotime(date('Y-m-d')));
         }
         $this->assign('tscs',$tscs);
         $this->display();

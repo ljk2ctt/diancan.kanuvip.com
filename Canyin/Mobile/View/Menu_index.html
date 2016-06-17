@@ -67,6 +67,7 @@
     
             <?php
             $foreach=0;
+            $timing=0;
             ?>
             <foreach name='tscs' item='data'>
                 <div class="SeckillTwo" <if condition='!$foreach'>style=" margin-top: 5rem;"</if>><?php ++$foreach;?>
@@ -74,18 +75,24 @@
                         <img data-original="{:C('KANU_IMG')}{$data.pic}"  src="/Public/Mobile/img/loading_comment.gif" class="lazy">
                     </div>
                     <div  class="HotDate">
-                        <br><a>特色菜</a><br>
+                        <br><a><if condition="$data['is_promote']"><?php $timing=1;?>促销菜<else/>特色菜</if></a><br>
                         <span class="t_d">{$data.gname}</span><br>
-                        <!--            <span class="t_h">00:</span>
-                                    <span class="t_m">00:</span>
-                                    <span class="t_s">00</span>-->
+                        <if condition="$data['is_promote']">
+                        <input type="hidden" id='promote_end_time{$data.id}' tsc_id='{$data.id}' value="<?php echo $data['promote_time_end']-strtotime('1970-01-01 '.date('H:i:s'));?>"/>
+                        <span class="t_h t_h_{$data.id}">00:</span>
+                        <span class="t_m t_m_{$data.id}">00:</span>
+                        <span class="t_s t_s_{$data.id}">00</span>
+                        </if>
                     </div>
                     <div class="hurry" style="right: 0" addcar='{$data.goods_id}' name="tscorder">
                         <button>来一份 <img src="/Public/Mobile/img/jian.png"></button>
                     </div>
+                    <if condition="$data['is_promote']">
                     <div class="number">
-                        <!--<p>已抢 25 份 剩余 25 份</p>-->
+                        <p>特价 ￥{$data.promote_price}</p>
                     </div>
+                    </if>
+                    
                 </div>
             </foreach>
             <div class="sidebar-nav">
@@ -107,7 +114,7 @@
 
                         <p class="menu-title">{$good.name}</p>
                         <div class="info clear">
-                            <em class="menu-sat">￥{$good.price}</em>
+                            <em class="menu-sat"><if condition="isset($good['promote_price'])">￥{$good.promote_price}<span style='font-size: 0.1rem'>促</span><span style='font-size:0.1rem;text-decoration:line-through;color: #666'>￥{$good.price}</span><else />￥{$good.price}</if></em>
                             <span class="sidebar-up" addcar='{$good.id}'><img src="/Public/Mobile/img/up.svg"  alt=""/></span>
                             <span class="sidebar-num" <if condition="$now_cars[$good['id']] gt 0"> style="display:block"</if>>{$now_cars[$good['id']]|default=0}</span>
                             <span class="sidebar-down" delcar='{$good.id}' <if condition="$now_cars[$good['id']] gt 0"> style="display:block"</if>><img src="/Public/Mobile/img/down.svg"  alt=""/></span>
@@ -156,6 +163,30 @@
 <script>
     $(document).ready(function () {
         $(".lazy").lazyload();
+        
+        <if condition="$timing eq 1">
+        setInterval(function(){
+             $("[tsc_id]").each(function(){
+                var tsc_id = $(this).attr('tsc_id');
+                var intDiff  = $(this).val();
+                var hour=0,
+                    minute=0,
+                    second=0;//时间默认值        
+                if(intDiff > 0){
+                    hour = Math.floor(intDiff / (60 * 60));
+                    minute = Math.floor(intDiff / 60) - (hour * 60);
+                    second = Math.floor(intDiff) - (hour * 60 * 60) - (minute * 60);
+                }
+                if (minute <= 9) minute = '0' + minute;
+                if (second <= 9) second = '0' + second;
+                $(".t_h_"+tsc_id).html(hour+':');
+                $(".t_m_"+tsc_id).html(minute+":");
+                $(".t_s_"+tsc_id).html(second);
+                $(this).val(--intDiff);
+            }); 
+        },1000);
+        </if>      
+        
         $(function () {
             
             // var navWidth = $(".sidebar-nav").width();
